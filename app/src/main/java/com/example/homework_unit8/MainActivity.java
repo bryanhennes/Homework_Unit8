@@ -19,7 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -111,15 +113,21 @@ public class MainActivity extends AppCompatActivity {
         getFieldsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainET.setFocusable(false);
-                ll.addView(numOfStudents);
-                getFieldsButton.setVisibility(View.GONE);
-                numOfStudents.requestFocus();
                 populateArray();
-                checkArray();
-                populateEditTexts();
-                addEditTexts();
-                ll.addView(computeButton);
+                Log.d("is valid??", "" + isValidInput());
+                if (!isValidInput()) {
+                    Toast.makeText(MainActivity.this, "Pleas enter a valid letter grade", Toast.LENGTH_LONG).show();
+                } else {
+                    mainET.setFocusable(false);
+                    ll.addView(numOfStudents);
+                    getFieldsButton.setVisibility(View.GONE);
+                    numOfStudents.requestFocus();
+                    //populateArray();
+                    checkArray();
+                    populateEditTexts();
+                    addEditTexts();
+                    ll.addView(computeButton);
+                }
             }
         });
 
@@ -132,12 +140,17 @@ public class MainActivity extends AppCompatActivity {
                 if(!areFieldsCompleted()) {
                     Toast.makeText(MainActivity.this, "Cannot leave any fields blank", Toast.LENGTH_LONG).show();
                 }
+
                 else{
                     populateGradeAmounts();
-
-                    startGraphActivity(view);
+                    //validate number of each grade adds up to total students
+                    if(!isValidNumOfStudents()){
+                        Toast.makeText(MainActivity.this, "Values do not add up to total amount of students", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        startGraphActivity(view);
+                    }
                 }
-                //startGraphActivity(view);
 
             }
         });
@@ -227,11 +240,12 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    // finish this to make sure user enters a number
+    //make sure user enters a number
     public boolean isValidInput(){
         boolean result = true;
-        for(int i = 0; i < inputArray.length; i++){
-            if(editTextArray[i].getText().toString().matches("")){
+        List<String> acceptableList = new ArrayList<>(Arrays.asList(acceptableGrades));
+        for(int i=0; i < inputArray.length; i++){
+            if(!acceptableList.contains(inputArray[i])){
                 result = false;
                 break;
             }
@@ -241,26 +255,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void startGraphActivity(View view){
         Intent intent = new Intent(this, GraphActivity.class);
-        //intent.putExtra("map", gradeAmounts);
-        //intent.putExtra
         startActivity(intent);
     }
 
-    public void pushValuesToView(View view){
-        Intent intent = new Intent(this, Graph.class);
-        intent.putExtra("map", gradeAmounts);
-    }
-
-    public void setSharedPreferences(HashMap<String, Integer> amounts){
-
-        for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue();
-
-
+    public boolean isValidNumOfStudents(){
+        int sum = 0;
+        boolean result = true;
+        for(int i =0; i< inputArray.length; i++){
+            sum += Integer.parseInt(editTextArray[i].getText().toString());
         }
-    }
+        if(sum != totalStudents){
+            result = false;
+        }
+        return result;
 
+    }
 
 
 }
