@@ -17,8 +17,5 @@ public class GraphActivity extends AppCompatActivity {
 
         graph = (Graph) findViewById(R.id.customView);
 
-        Intent intent = getIntent();
-        HashMap<String, Integer> hashMap = (HashMap<String, Integer>)intent.getSerializableExtra("map");
-
     }
 }

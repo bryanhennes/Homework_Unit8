@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String AMOUNT10 = "LETTER_AMOUNT_TEN";
     public static final String AMOUNT11 = "LETTER_AMOUNT_ELEVEN";
     public static final String lettersAmount = "TOTAL_DIFFERENT_LETTER_GRADES";
+    public static final String NUM_OF_STUDENTS = "TOTAL_STUDENTS";
     //array of sharedpreference keys for letter grade
     public static String[] keys = {GRADE1, GRADE2, GRADE3, GRADE4, GRADE5, GRADE6, GRADE7, GRADE8, GRADE9, GRADE10, GRADE11};
     //array of sharedpreference keys for grade amounts
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     populateGradeAmounts();
+
                     startGraphActivity(view);
                 }
                 //startGraphActivity(view);
@@ -206,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
         }
         //put the total number of different letters
         editor.putInt(lettersAmount, inputArray.length);
+        totalStudents = Integer.parseInt(numOfStudents.getText().toString());
+        editor.putInt(NUM_OF_STUDENTS, totalStudents);
         //editor.commit();
         editor.apply();
         Log.d("GradeAmounts: ", ""+gradeAmounts);
