@@ -2,6 +2,7 @@ package com.example.homework_unit8;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -91,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
         computeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isValidInput()) {
+                /*if(!areFieldsCompleted()) {
                     Toast.makeText(MainActivity.this, "Cannot leave any fields blank", Toast.LENGTH_LONG).show();
                 }
                 else{
                     populateGradeAmounts();
-                }
+                    startGraphActivity(view);
+                }*/
+                startGraphActivity(view);
 
             }
         });
@@ -166,6 +169,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public boolean areFieldsCompleted(){
+        boolean result = true;
+        for(int i = 0; i < inputArray.length; i++){
+            if(editTextArray[i].getText().toString().matches("")){
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    // finish this to make sure user enters a number
     public boolean isValidInput(){
         boolean result = true;
         for(int i = 0; i < inputArray.length; i++){
@@ -175,6 +190,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return result;
+    }
+
+    public void startGraphActivity(View view){
+        Intent intent = new Intent(this, GraphActivity.class);
+        //intent.putExtra("map", gradeAmounts);
+        //intent.putExtra
+        startActivity(intent);
+    }
+
+    public void pushValuesToView(View view){
+        Intent intent = new Intent(this, Graph.class);
+        intent.putExtra("map", gradeAmounts);
     }
 
 
